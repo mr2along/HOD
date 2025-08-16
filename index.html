@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Auto Refresh Google Sheets with Countdown</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+    #countdown {
+      text-align: center;
+      padding: 10px;
+      font-size: 24px;
+      background-color: #111;
+    }
+    iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="countdown">Làm mới sau: 5:00</div>
+  <iframe
+    id="sheetFrame"
+    src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQMORhUByI3JJiqJcKrIuMMFS_VG97aqIfb3qIpclL4s93CHflrtq1yggsWpUKLfIzIjZdwvxxjuw4G/pubhtml?widget=true&headers=false"
+    allowfullscreen>
+  </iframe>
+
+  <script>
+    let countdownSeconds = 300; // 10 minutes
+
+    function updateCountdown() {
+      const minutes = Math.floor(countdownSeconds / 60);
+      const seconds = countdownSeconds % 60;
+      document.getElementById("countdown").textContent =
+        "Làm mới sau: " + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
+      countdownSeconds--;
+
+      if (countdownSeconds < 0) {
+        // Refresh iframe
+        const iframe = document.getElementById("sheetFrame");
+        iframe.src = iframe.src;
+        countdownSeconds = 300; // Reset countdown
+      }
+    }
+
+    // Update countdown every second
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
